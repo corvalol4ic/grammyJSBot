@@ -17,7 +17,7 @@ bot.api.setMyCommands([
 
 
 bot.command(['start', 'help'], async (ctx) =>{
-    await ctx.reply('начало на JS')
+    await ctx.reply('начало на JS и теперь мы автообновляемся')
 })
 
 // отправка ответа на сообщение
