@@ -10,13 +10,14 @@ const bot = new Bot(process.env.BOT_TOKEN)
 const adminHandler = require('./handlers/admin');
 const startHandler = require('./handlers/start');
 const runHandler = require('./handlers/macdRsi');
-
+const marketHandler = require('./handlers/spotMarkets');
 
 // Подключаем обработчики
+marketHandler(bot)
 startHandler(bot);
 runHandler(bot);
 adminHandler(bot);
-
+marketHandler(bot)
 
 //установка дефолтных команд бота
 bot.api.setMyCommands([

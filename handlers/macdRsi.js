@@ -35,7 +35,7 @@ function sleep(ms) {
 
 async function analyzeMarket() {
        // Задержка между запросами (в миллисекундах)
-       const delayBetweenRequests = 1000; // 1 секунда
+       const delayBetweenRequests = 10000; // 1 секунда
     // Перебор торговых пар
     for (const symbol of symbols) {
         for (const timeframe of timeframes) {
