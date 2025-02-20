@@ -2,7 +2,7 @@ const ccxt = require('ccxt');
 const { MACD, RSI } = require('technicalindicators');
 
 
-const CHAt_ID = process.env.CHAt_ID
+const CHAt_ID = -1002496172374
 
 module.exports = (bot) => {
     bot.command('run', async (ctx) => {
