@@ -1,7 +1,6 @@
 const ccxt = require('ccxt');
 const { MACD, RSI } = require('technicalindicators');
 
-
 const CHAt_ID = process.env.CHAt_ID
 
 module.exports = (bot) => {
@@ -82,6 +81,12 @@ async function analyzeMarket() {
 }
 
 // Запуск анализа
-analyzeMarket();
+const intervalId = setInterval(async () => {
+   
+    analyzeMarket()
+}, 1 * 60 * 1000); // 5 минут в миллисекундах
+
+
+
 })
 }
