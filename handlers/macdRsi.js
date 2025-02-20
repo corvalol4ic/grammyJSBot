@@ -9,7 +9,7 @@ module.exports = (bot) => {
 //const symbol = 'BTC/USDT'; // Торговая пара
 const symbols = ['BTC/USDT', 'APE/USDT', 'PEPE/USDT', 'XRP/USDT'];
 //const timeframe = '5m';    // Таймфрейм (1 час)
-const timeframes = ['1m', '5m', '1h', '1d']; // Разные таймфреймы
+const timeframes = ['5m', '15m', '1h', '1d']; // Разные таймфреймы
 const limit = 100;         // Количество свечей для анализа
 
 // Параметры индикаторов
@@ -84,7 +84,7 @@ async function analyzeMarket() {
 const intervalId = setInterval(async () => {
    
     analyzeMarket()
-}, 1 * 60 * 1000); // 5 минут в миллисекундах
+}, 5 * 60 * 1000); // 5 минут в миллисекундах
 
 
 
