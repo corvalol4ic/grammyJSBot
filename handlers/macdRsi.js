@@ -7,7 +7,7 @@ module.exports = (bot) => {
     bot.command('run', async (ctx) => {
 // Настройки
 //const symbol = 'BTC/USDT'; // Торговая пара
-const symbols = ['BTC/USDT', 'APE/USDT', 'PEPE/USDT', 'XRP/USDT', 'SOL/USDT', '1SOL/USDT'];
+const symbols = ['BTC/USDT', 'APE/USDT', 'PEPE/USDT', 'XRP/USDT', 'SOL/USDT', 'TRX/USDT'];
 //const timeframe = '5m';    // Таймфрейм (1 час)
 const timeframes = ['5m', '15m', '1h', '1d']; // Разные таймфреймы
 const limit = 100;         // Количество свечей для анализа
