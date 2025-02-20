@@ -28,7 +28,14 @@ const rsiSettings = {
 // Инициализация Bybit
 const exchange = new ccxt.bybit();
 
+// Функция для создания задержки
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 async function analyzeMarket() {
+       // Задержка между запросами (в миллисекундах)
+       const delayBetweenRequests = 1000; // 1 секунда
     // Перебор торговых пар
     for (const symbol of symbols) {
         for (const timeframe of timeframes) {
@@ -76,6 +83,8 @@ async function analyzeMarket() {
             } catch (error) {
                 console.error('Ошибка:', error);
             }
+            // Добавляем задержку между запросами
+            await sleep(delayBetweenRequests);
 }
 }
 }
