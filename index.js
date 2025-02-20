@@ -2,7 +2,20 @@ require('dotenv').config()
 const {Bot, GrammyError,HttpError} = require('grammy')
 
 
+
 const bot = new Bot(process.env.BOT_TOKEN)
+
+
+// Импортируем обработчики
+const adminHandler = require('./handlers/admin');
+const startHandler = require('./handlers/start');
+const runHandler = require('./handlers/macdRsi');
+
+
+// Подключаем обработчики
+startHandler(bot);
+runHandler(bot);
+adminHandler(bot);
 
 
 //установка дефолтных команд бота
@@ -16,7 +29,7 @@ bot.api.setMyCommands([
 ])
 
 
-bot.command(['start', 'help'], async (ctx) =>{
+bot.command(['poooop', 'help'], async (ctx) =>{
     await ctx.reply('начало на JS и теперь мы автообновляемся')
 })
 
@@ -27,6 +40,7 @@ bot.command( 'wow', async (ctx) =>{
     await ctx.reply('начало на JS', {
         reply_parameters: {message_id: ctx.msg.message_id }
     })
+    
 })
 
 bot.hears(/жесть/, async (ctx) =>{
@@ -37,12 +51,7 @@ bot.on(':photo', async (ctx) => {
     await ctx.reply('отличное фото')
 })
 // кастомные фильтры
-bot.on('msg').filter((ctx) => {
-   return ctx.from.id === 390731763
-}, async (ctx) => {
-    await ctx.reply('Привет хозяин')
-    console.log(ctx.msg)
-})
+
 
 
 bot.catch((err) => {
@@ -59,6 +68,7 @@ bot.catch((err) => {
         console.error('Unknown error:', e);
     }
 })
+
 
 
 
