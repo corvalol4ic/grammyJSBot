@@ -678,9 +678,9 @@ values: closes_1h,
             } else if (lastMacd_15.histogram > 0 && lastMacd_1h.histogram > 0 && lastMacd_1d.histogram < 0) {
                 
                 await bot.api.sendMessage(CHAt_ID, `Сигнал на рисковую покупку ${symbol}: MACD 1D гистограмма ниже 0, но можно рикнуть поторговать в часовом интервале`);
-            } else {
-                await bot.api.sendMessage(CHAt_ID,`${symbol} нет входа`)
-            }
+            } //else {
+               // await bot.api.sendMessage(CHAt_ID,`${symbol} нет входа`)
+           // }
         } catch (error) {
             console.error('Ошибка:', error);
         }
