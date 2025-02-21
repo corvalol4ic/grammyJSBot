@@ -1,5 +1,8 @@
 
 const ccxt = require('ccxt');
+const fs = require('fs');
+
+
 
 
 module.exports = (bot) => {
@@ -20,12 +23,21 @@ module.exports = (bot) => {
         
                 // Выводим список спотовых торговых пар
                 spotMarkets.forEach(market => {
-                    console.log(market.symbol);
+                    //console.log(market.symbol);
+                    
+                // Добавляем новые значения в массив
+                array = []
+                 array = array.concat(market.symbol);    
+                    console.log(array)
+                    
+
                 });
             } catch (error) {
                 console.error('Ошибка при загрузке рынков:', error);
             }
+           
         })(); 
+
 
 
 
