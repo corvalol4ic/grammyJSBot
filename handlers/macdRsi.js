@@ -671,13 +671,13 @@ values: closes_1h,
 
 
 
-            if (lastMacd_15.histogram > 0 && lastMacd_1h.histogram > 0 && lastMacd_1d.histogram > 0) {
+            if (lastMacd_15.histogram > 0 && lastMacd_1h.histogram > 0 && lastMacd_1d.histogram > 0 && lastRsi_5.histogram < 35) {
             
                 // Отправка сообщения в группу
-                await bot.api.sendMessage(CHAt_ID, `Сигнал на покупку ${symbol}: MACD гистограмма выше 0 `);
-            } else if (lastMacd_15.histogram > 0 && lastMacd_1h.histogram > 0 && lastMacd_1d.histogram < 0) {
+                await bot.api.sendMessage(CHAt_ID, `Сигнал на покупку ${symbol}: MACD гистограмма выше 0 и RSI 5m меньше 35`);
+            } else if (lastMacd_15.histogram > 0 && lastMacd_1h.histogram > 0 && lastMacd_1d.histogram < 0 && lastRsi_5.histogram < 35) {
                 
-                await bot.api.sendMessage(CHAt_ID, `Сигнал на рисковую покупку ${symbol}: MACD 1D гистограмма ниже 0, но можно рикнуть поторговать в часовом интервале`);
+                await bot.api.sendMessage(CHAt_ID, `Сигнал на рисковую покупку ${symbol}: MACD 1D гистограмма ниже 0 и RSI 5m меньше 35, но можно рикнуть поторговать в часовом интервале`);
             } //else {
                // await bot.api.sendMessage(CHAt_ID,`${symbol} нет входа`)
            // }
