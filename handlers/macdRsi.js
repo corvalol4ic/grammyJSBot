@@ -671,16 +671,16 @@ values: closes_1h,
 
 
 
-            if (lastMacd_15.histogram > 0 && lastMacd_1h.histogram > 0 && lastMacd_1d.histogram > 0 && lastRsi_5.histogram < 35) {
+            if (lastMacd_15.histogram > 0 && lastMacd_1h.histogram > 0 && lastMacd_1d.histogram > 0 && lastRsi_5.histogram < 50) {
             
                 // Отправка сообщения в группу
-                await bot.api.sendMessage(CHAt_ID, `Сигнал на покупку ${symbol}: MACD гистограмма выше 0 и RSI 5m меньше 35`);
-            } else if (lastMacd_15.histogram > 0 && lastMacd_1h.histogram > 0 && lastMacd_1d.histogram < 0 && lastRsi_5.histogram < 35) {
+                await bot.api.sendMessage(CHAt_ID, `Сигнал на покупку ${symbol}: MACD гистограмма выше 0 и RSI 5m меньше 50`);
+            } else if (lastMacd_15.histogram > 0 && lastMacd_1h.histogram > 0 && lastMacd_1d.histogram < 0 && lastRsi_5.histogram < 50) {
                 
-                await bot.api.sendMessage(CHAt_ID, `Сигнал на рисковую покупку ${symbol}: MACD 1D гистограмма ниже 0 и RSI 5m меньше 35, но можно рикнуть поторговать в часовом интервале`);
-            } //else {
-               // await bot.api.sendMessage(CHAt_ID,`${symbol} нет входа`)
-           // }
+                await bot.api.sendMessage(CHAt_ID, `Сигнал на рисковую покупку ${symbol}: MACD 1D гистограмма ниже 0 и RSI 5m меньше 50, но можно рикнуть поторговать в часовом интервале`);
+            }// } else {
+            //    console.log(`${symbol} `)
+            // }
         } catch (error) {
             console.error('Ошибка:', error);
         }

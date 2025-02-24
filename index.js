@@ -20,14 +20,14 @@ adminHandler(bot);
 marketHandler(bot)
 
 //установка дефолтных команд бота
-bot.api.setMyCommands([
-    {
-        command: 'start', description: 'начало работы бота'
-    },
-    {
-        command: 'help', description: 'помощь'
-    }
-])
+//bot.api.setMyCommands([
+  //  {
+    //    command: 'start', description: 'начало работы бота'
+    //},
+   // {
+     //   command: 'help', description: 'помощь'
+   // }
+//])
 
 
 bot.command(['poooop', 'help'], async (ctx) =>{
