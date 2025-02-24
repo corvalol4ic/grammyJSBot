@@ -671,7 +671,7 @@ values: closes_1h,
 
 
 
-            if (lastMacd_15.histogram > 0 && lastMacd_1h.histogram > 0 && lastMacd_1d.histogram > 0 && lastRsi_5.histogram < 50) {
+            if (lastMacd_15.histogram > 0 && lastMacd_1h.histogram > 0 && lastMacd_1d.histogram > 0 ) {
             
                 // Отправка сообщения в группу
                 await bot.api.sendMessage(CHAt_ID, `Сигнал на покупку ${symbol}: MACD гистограмма выше 0 и RSI 5m меньше 50`);
