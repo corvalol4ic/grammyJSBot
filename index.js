@@ -30,28 +30,28 @@ marketHandler(bot)
 //])
 
 
-bot.command(['poooop', 'help'], async (ctx) =>{
-    await ctx.reply('начало на JS и теперь мы автообновляемся')
-})
+// bot.command(['poooop', 'help'], async (ctx) =>{
+//     await ctx.reply('начало на JS и теперь мы автообновляемся')
+// })
 
-// отправка ответа на сообщение
-bot.command( 'wow', async (ctx) =>{
+// // отправка ответа на сообщение
+// bot.command( 'wow', async (ctx) =>{
     
-    await ctx.react('👍')
-    await ctx.reply('начало на JS', {
-        reply_parameters: {message_id: ctx.msg.message_id }
-    })
+//     await ctx.react('👍')
+//     await ctx.reply('начало на JS', {
+//         reply_parameters: {message_id: ctx.msg.message_id }
+//     })
     
-})
+// })
 
-bot.hears(/жесть/, async (ctx) =>{
-    await ctx.reply('как есть')
-})
+// bot.hears(/жесть/, async (ctx) =>{
+//     await ctx.reply('как есть')
+// })
 
-bot.on(':photo', async (ctx) => {
-    await ctx.reply('отличное фото')
-})
-// кастомные фильтры
+// bot.on(':photo', async (ctx) => {
+//     await ctx.reply('отличное фото')
+// })
+// // кастомные фильтры
 
 
 
