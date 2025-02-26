@@ -707,7 +707,7 @@ module.exports = (bot) => {
         const intervalId = setInterval(async () => {
 
             analyzeMarket()
-        }, 5 * 60 * 1000); // 5 минут в миллисекундах
+        }, 65 * 60 * 1000); // 5 минут в миллисекундах
 
 
     }
