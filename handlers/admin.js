@@ -692,7 +692,7 @@ module.exports = (bot) => {
                 } catch (error) {
                     console.error('Ошибка:', error);
                 }
-                // Добавляем задержку между запросами
+                // Добавляем задержку между запросами +
                 await sleep(delayBetweenRequests);
             }
         }
