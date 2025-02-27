@@ -1,5 +1,6 @@
 const ccxt = require('ccxt');
 const { MACD, RSI } = require('technicalindicators');
+const { InlineKeyboard } = require("grammy");
 
 const CHAt_ID = process.env.CHAt_ID
 
@@ -562,11 +563,7 @@ module.exports = (bot) => {
         //const timeframe = '5m';    // Таймфрейм (1 час)
         //const timeframes = ['5m', '15m', '1h', '1d']; // Разные таймфреймы
         const limit = 100;         // Количество свечей для анализа
-  // Создаем инлайн-клавиатуру
-  const message_kb = new InlineKeyboard().url(
-    `Перейти к ${symbol}`,
-    `https://www.bybit.com/trade/spot/${symbol}`
-  );
+
         // Параметры индикаторов
         const macdSettings = {
             fastPeriod: 12,
