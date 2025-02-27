@@ -7,7 +7,7 @@ const bot = new Bot(process.env.BOT_TOKEN)
 
 
 // Импортируем обработчики
-const adminHandler = require('./handlers/admin');
+//const adminHandler = require('./handlers/admin');
 const startHandler = require('./handlers/start');
 const runHandler = require('./handlers/macdRsi');
 const marketHandler = require('./handlers/spot');
