@@ -178,10 +178,10 @@ const createMessage = (symbol, trendResult, exitLevels) => {
   return `📊 <b>${symbol}</b>\n` +
     `📈 <b>Тренд:</b> ${trendResult.trend} (${trendResult.percentage.toFixed(2)}%)\n` +
     `🎯 <b>Вход:</b> ${exitLevels.entry}\n` +
-    `🛑 <b>Стоп:</b> ${exitLevels.stopLoss} (${stopLossPercent.toFixed(2)}%)\n` +
-    `💰 <b>Профит:</b> ${exitLevels.takeProfit} (${takeProfitPercent.toFixed(2)}%)\n` +
+   // `🛑 <b>Стоп:</b> ${exitLevels.stopLoss} (${stopLossPercent.toFixed(2)}%)\n` +
+    //`💰 <b>Профит:</b> ${exitLevels.takeProfit} (${takeProfitPercent.toFixed(2)}%)\n` +
     `🏷 <b>Трейлинг:</b> ${exitLevels.trailingStop}\n` +
-    `📉 <b>ATR:</b> ${exitLevels.atrValue}`;
+   // `📉 <b>ATR:</b> ${exitLevels.atrValue}`;
 };
 
 const analyzePair = async (symbol) => {
