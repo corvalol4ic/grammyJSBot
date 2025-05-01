@@ -205,7 +205,7 @@ const analyzePair = async (symbol) => {
   return analysis;
 };
 
-// Основная функция анализа
+// Основная функция  анализа
 const runAnalysis = async (bot) => {
   const pairs = await getTopLiquidPairs(CONFIG.MAX_PAIRS);
   for (const pair of pairs) {
