@@ -178,10 +178,14 @@ const createMessage = (symbol, trendResult, exitLevels) => {
   return `📊 <b>${symbol}</b>\n` +
     `📈 <b>Тренд:</b> ${trendResult.trend} (${trendResult.percentage.toFixed(2)}%)\n` +
     `🎯 <b>Вход:</b> ${exitLevels.entry}\n` +
+<<<<<<< HEAD
+    `🏷 <b>Трейлинг:</b> ${exitLevels.trailingStop}\n`;
+=======
    // `🛑 <b>Стоп:</b> ${exitLevels.stopLoss} (${stopLossPercent.toFixed(2)}%)\n` +
     //`💰 <b>Профит:</b> ${exitLevels.takeProfit} (${takeProfitPercent.toFixed(2)}%)\n` +
     `🏷 <b>Трейлинг:</b> ${exitLevels.trailingStop}\n` +
    // `📉 <b>ATR:</b> ${exitLevels.atrValue}`;
+>>>>>>> ef49d4b22195addbdd8e2cfbabefa001ad8fe186
 };
 
 const analyzePair = async (symbol) => {
@@ -233,7 +237,7 @@ const runAnalysis = async (bot) => {
 // Экспорт бота с автозапуском
 module.exports = (bot) => {
   // Запуск анализа сразу  при старте
-  //runAnalysis(bot);
+  runAnalysis(bot);
   
   // Установка периодического запуска каждые 10 минут
   setInterval(() => runAnalysis(bot), CONFIG.ANALYSIS_INTERVAL);
