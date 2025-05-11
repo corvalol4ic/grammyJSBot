@@ -314,8 +314,8 @@ const checkStateChange = (symbol, newState) => {
 // Основная функция анализа
 const runAnalysis = async (bot) => {
   try {
-    console.log("Starting analysis...");
-    console.log(`Analyzing ${CONFIG.TRADING_PAIRS.length} pairs:`, CONFIG.TRADING_PAIRS);
+   // console.log("Starting analysis...");
+  //  console.log(`Analyzing ${CONFIG.TRADING_PAIRS.length} pairs:`, CONFIG.TRADING_PAIRS);
     
     for (const pair of CONFIG.TRADING_PAIRS) {
       try {
@@ -342,7 +342,7 @@ const runAnalysis = async (bot) => {
           trendResult.profitPercent
         );
         
-        console.log(`Sending signal for ${pair}: ${trendResult.trend}`);
+       // console.log(`Sending signal for ${pair}: ${trendResult.trend}`);
         await bot.api.sendMessage(
           CONFIG.CHAT_ID,
           createMessage(pair, trendResult, exitLevels),
@@ -350,13 +350,13 @@ const runAnalysis = async (bot) => {
         );
         await setTimeout(CONFIG.MESSAGE_DELAY);
       } catch (error) {
-        console.error(`Error analyzing pair ${pair}:`, error);
+       // console.error(`Error analyzing pair ${pair}:`, error);
       }
     }
     
-    console.log("Analysis completed");
+   // console.log("Analysis completed");
   } catch (error) {
-    console.error("Error in runAnalysis:", error);
+   // console.error("Error in runAnalysis:", error);
   }
 };
 
