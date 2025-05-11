@@ -407,7 +407,7 @@ const setupBotCommands = (bot) => {
   bot.command('analyze', async (ctx) => {
     await ctx.reply("Запускаю анализ...");
     await runAnalysis(bot);
-    await ctx.reply("Анализ завершен");
+    await ctx.reply("Анализ  завершен");
   });
 };
 
