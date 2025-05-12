@@ -272,8 +272,8 @@ const createKeyboard = (symbol) => {
   const mexcSymbol = symbol.replace('/', '_');
   
   return new InlineKeyboard()
-    .url("Перейти к паре (Bybit)", `${CONFIG.BYBIT_LINK}${bybitSymbol}`).row()
-    .url("Перейти к паре (MEXC)", `${CONFIG.MEXC_LINK}${mexcSymbol}`)
+    .url("Bybit", `${CONFIG.BYBIT_LINK}${bybitSymbol}`).row()
+    .url("MEXC", `${CONFIG.MEXC_LINK}${mexcSymbol}`)
     
 };
 
