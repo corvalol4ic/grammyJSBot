@@ -6,7 +6,7 @@ const { setTimeout } = require("timers/promises");
 const CONFIG = {
   CHAT_ID: "-1002496172374",
   MESSAGE_DELAY: 3500,
-  ANALYSIS_INTERVAL: 1 * 60 * 1000, // 10 минут в миллисекундах
+  ANALYSIS_INTERVAL: 2 * 60 * 1000, // 10 минут в миллисекундах
   // Пары для анализа (можно добавлять/удалять)
   TRADING_PAIRS: [
     "MNT/USDT",
