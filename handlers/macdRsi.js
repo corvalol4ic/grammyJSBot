@@ -6,83 +6,42 @@ const { setTimeout } = require("timers/promises");
 const CONFIG = {
   CHAT_ID: "-1002496172374",
   MESSAGE_DELAY: 3500,
-  ANALYSIS_INTERVAL: 1 * 60 * 1000, // 10 минут в миллисекундах
-  // Пары для анализа (можно добавлять/удалять)
-  TRADING_PAIRS: ["PEPE/USDT",
-
-"XRP/USDT",
-
-"DOT/USDT",
-
-"LTC/USDT",
-"DOGE/USDT",
-
-"AXS/USDT",
-
-"DYDX/USDT",
-
-
-"AAVE/USDT",
-
-"LINK/USDT",
-"SUSHI/USDT",
-"UNI/USDT",
-"KAS/USDT",
-
-"ADA/USDT",
-
-
-
-"GRT/USDT",
-"SOL/USDT",
-"FIL/USDT",
-"OMG/USDT",
-"BAT/USDT",
-"ZRX/USDT",
-"CRV/USDT",
-
-"PERP/USDT",
-"WAVES/USDT",
-"LUNC/USDT",
-"SPELL/USDT",
-"SHIB/USDT",
-"ATOM/USDT",
-"ALGO/USDT",
-
-"SAND/USDT",
-"AVAX/USDT",
-
-
-"AVA/USDT",
-
-"QTUM/USDT",
-
-"GMX/USDT","ACH/USDT","SUN/USDT","BTT/USDT","TRX/USDT","NFT/USDT","POKT/USDT","SON/USDT","DOME/USDT","NEAR/USDT","SD/USDT","APE/USDT","RACA/USDT","LUNA/USDT","FLOKI/USDT","BABYDOGE/USDT",
-"APT/USDT","PEOPLE/USDT","TWT/USDT","ORT/USDT","HOOK/USDT","OAS/USDT","MAGIC/USDT","TON/USDT","BONK/USDT","FLR/USDT","TIME/USDT",
-                  "RPL/USDT",],
-  TIMEFRAMES: ["5m", "15m", "1h", "1d"],
+  ANALYSIS_INTERVAL: 1 * 60 * 1000, // 1 минута в миллисекундах
+  // Пары для анализа
+  TRADING_PAIRS: [
+    "PEPE/USDT", "XRP/USDT", "DOT/USDT", "LTC/USDT", "DOGE/USDT",
+    "AXS/USDT", "DYDX/USDT", "AAVE/USDT", "LINK/USDT", "SUSHI/USDT",
+    "UNI/USDT", "KAS/USDT", "ADA/USDT", "GRT/USDT", "SOL/USDT",
+    "FIL/USDT", "OMG/USDT", "BAT/USDT", "ZRX/USDT", "CRV/USDT",
+    "PERP/USDT", "WAVES/USDT", "LUNC/USDT", "SPELL/USDT", "SHIB/USDT",
+    "ATOM/USDT", "ALGO/USDT", "SAND/USDT", "AVAX/USDT", "AVA/USDT",
+    "QTUM/USDT", "GMX/USDT", "ACH/USDT", "SUN/USDT", "BTT/USDT",
+    "TRX/USDT", "NFT/USDT", "POKT/USDT", "SON/USDT", "DOME/USDT",
+    "NEAR/USDT", "SD/USDT", "APE/USDT", "RACA/USDT", "LUNA/USDT",
+    "FLOKI/USDT", "BABYDOGE/USDT", "APT/USDT", "PEOPLE/USDT",
+    "TWT/USDT", "ORT/USDT", "HOOK/USDT", "OAS/USDT", "MAGIC/USDT",
+    "TON/USDT", "BONK/USDT", "FLR/USDT", "TIME/USDT", "RPL/USDT"
+  ],
+  TIMEFRAMES: ["15m", "1h", "4h"], // Оптимизированные таймфреймы
   INDICATORS: {
-    RSI: { period: 14, overbought: 70, oversold: 30 },
+    STOCHASTIC: { period: 14, kPeriod: 3, dPeriod: 3, overbought: 80, oversold: 20 },
     MACD: { fastPeriod: 12, slowPeriod: 26, signalPeriod: 9 },
-    EMA: { period: 20 },
-    SMA: { period: 50 },
-    BOLL: { period: 20, stdDev: 2 },
     ATR: { period: 14 }
   },
   TREND_THRESHOLDS: {
-    STRONG_BULLISH: 60,
-    BULLISH: 55,
+    STRONG_BULLISH: 75,
+    BULLISH: 60,
     BEARISH: 40,
-    STRONG_BEARISH: 30
+    STRONG_BEARISH: 25
   },
   PROFIT_PERCENT: {
-    STRONG_BULLISH: 2,
-    BULLISH: 1
+    STRONG_BULLISH: 3,
+    BULLISH: 2
   },
   EXIT_STRATEGY: {
     RISK_REWARD_RATIO: 2,
     ATR_MULTIPLIER: 1.5,
-    TRAILING_STOP_PERCENT: 0.5
+    TRAILING_STOP_PERCENT: 0.8
   },
   BYBIT_LINK: "https://www.bybit.com/ru-RU/trade/spot/",
   MEXC_LINK: "https://www.mexc.com/ru-RU/exchange/"
@@ -95,43 +54,43 @@ const exchange = new ccxt.bybit({ enableRateLimit: true });
 const pairStates = new Map();
 
 // Функции индикаторов
-const calculateSMA = (data, period) => {
-  const sma = [];
-  for (let i = period - 1; i < data.length; i++) {
-    sma.push(data.slice(i - period + 1, i + 1).reduce((a, b) => a + b, 0) / period);
+const calculateStochastic = (candles, period, kPeriod, dPeriod) => {
+  const highs = candles.map(c => c.high);
+  const lows = candles.map(c => c.low);
+  const closes = candles.map(c => c.close);
+  
+  const stochK = [];
+  for (let i = period - 1; i < closes.length; i++) {
+    const highestHigh = Math.max(...highs.slice(i - period + 1, i + 1));
+    const lowestLow = Math.min(...lows.slice(i - period + 1, i + 1));
+    const currentClose = closes[i];
+    const k = ((currentClose - lowestLow) / (highestHigh - lowestLow)) * 100;
+    stochK.push(k);
   }
-  return sma;
-};
-
-const calculateEMA = (data, period) => {
-  const ema = [];
-  const k = 2 / (period + 1);
-  ema[0] = data[0];
-  for (let i = 1; i < data.length; i++) {
-    ema[i] = data[i] * k + ema[i - 1] * (1 - k);
+  
+  const stochD = [];
+  for (let i = kPeriod - 1; i < stochK.length; i++) {
+    const d = stochK.slice(i - kPeriod + 1, i + 1).reduce((a, b) => a + b, 0) / kPeriod;
+    stochD.push(d);
   }
-  return ema;
-};
-
-const calculateRSI = (data, period) => {
-  const gains = [], losses = [];
-  for (let i = 1; i < data.length; i++) {
-    const change = data[i] - data[i - 1];
-    gains.push(change > 0 ? change : 0);
-    losses.push(change < 0 ? -change : 0);
-  }
-  let avgGain = gains.slice(0, period).reduce((a, b) => a + b, 0) / period;
-  let avgLoss = losses.slice(0, period).reduce((a, b) => a + b, 0) / period;
-  const rsi = [100 - (100 / (1 + avgGain / Math.max(avgLoss, 0.000001)))];
-  for (let i = period; i < gains.length; i++) {
-    avgGain = (avgGain * (period - 1) + gains[i]) / period;
-    avgLoss = (avgLoss * (period - 1) + losses[i]) / period;
-    rsi.push(100 - (100 / (1 + avgGain / Math.max(avgLoss, 0.000001))));
-  }
-  return rsi;
+  
+  return {
+    k: stochK.slice(-1)[0],
+    d: stochD.slice(-1)[0]
+  };
 };
 
 const calculateMACD = (data, fastPeriod, slowPeriod, signalPeriod) => {
+  const calculateEMA = (data, period) => {
+    const ema = [];
+    const k = 2 / (period + 1);
+    ema[0] = data[0];
+    for (let i = 1; i < data.length; i++) {
+      ema[i] = data[i] * k + ema[i - 1] * (1 - k);
+    }
+    return ema;
+  };
+
   const fastEMA = calculateEMA(data, fastPeriod);
   const slowEMA = calculateEMA(data, slowPeriod);
   const startIdx = slowEMA.length - fastEMA.length;
@@ -143,18 +102,6 @@ const calculateMACD = (data, fastPeriod, slowPeriod, signalPeriod) => {
   };
 };
 
-const calculateBollingerBands = (data, period, stdDev) => {
-  const sma = calculateSMA(data, period);
-  const bands = [];
-  for (let i = period - 1; i < data.length; i++) {
-    const slice = data.slice(i - period + 1, i + 1);
-    const mean = sma[i - period + 1];
-    const std = Math.sqrt(slice.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / period);
-    bands.push({ upper: mean + stdDev * std, middle: mean, lower: mean - stdDev * std });
-  }
-  return bands.slice(-1)[0];
-};
-
 const calculateATR = (candles, period) => {
   const tr = [];
   for (let i = 1; i < candles.length; i++) {
@@ -162,7 +109,7 @@ const calculateATR = (candles, period) => {
       candles[i].high - candles[i].low,
       Math.abs(candles[i].high - candles[i-1].close),
       Math.abs(candles[i].low - candles[i-1].close)
-    ));
+    );
   }
   let atr = [tr.slice(0, period).reduce((a, b) => a + b, 0) / period];
   for (let i = period; i < tr.length; i++) {
@@ -191,21 +138,32 @@ const determineTrend = (analysis) => {
   
   for (const timeframe of CONFIG.TIMEFRAMES) {
     if (!analysis[timeframe]) continue;
-    const { indicators, lastClose } = analysis[timeframe];
+    const { indicators } = analysis[timeframe];
     
-    // Bullish signals
-    if (indicators.RSI < CONFIG.INDICATORS.RSI.oversold) bullishCount++;
-    if (indicators.MACD.histogram > 0) bullishCount++;
-    if (indicators.EMA > indicators.SMA) bullishCount++;
-    if (lastClose < indicators.BOLL.lower) bullishCount++;
+    // Сигналы стохастика
+    if (indicators.STOCHASTIC.k < CONFIG.INDICATORS.STOCHASTIC.oversold && 
+        indicators.STOCHASTIC.d < CONFIG.INDICATORS.STOCHASTIC.oversold &&
+        indicators.STOCHASTIC.k > indicators.STOCHASTIC.d) {
+      bullishCount += 2; // Более сильный вес для стохастика
+    }
     
-    // Bearish signals
-    if (indicators.RSI > CONFIG.INDICATORS.RSI.overbought) bearishCount++;
-    if (indicators.MACD.histogram < 0) bearishCount++;
-    if (indicators.EMA < indicators.SMA) bearishCount++;
-    if (lastClose > indicators.BOLL.upper) bearishCount++;
+    // Сигналы MACD
+    if (indicators.MACD.histogram > 0 && indicators.MACD.macd > indicators.MACD.signal) {
+      bullishCount++;
+    }
     
-    totalSignals += 4;
+    // Медвежьи сигналы
+    if (indicators.STOCHASTIC.k > CONFIG.INDICATORS.STOCHASTIC.overbought && 
+        indicators.STOCHASTIC.d > CONFIG.INDICATORS.STOCHASTIC.overbought &&
+        indicators.STOCHASTIC.k < indicators.STOCHASTIC.d) {
+      bearishCount += 2;
+    }
+    
+    if (indicators.MACD.histogram < 0 && indicators.MACD.macd < indicators.MACD.signal) {
+      bearishCount++;
+    }
+    
+    totalSignals += 3; // 2 от стохастика и 1 от MACD на каждом таймфрейме
   }
   
   const bullishPercentage = (bullishCount / totalSignals) * 100;
@@ -267,14 +225,12 @@ const calculateExitLevels = (candles, lastClose, atr, profitPercent) => {
 };
 
 const createKeyboard = (symbol) => {
-  // Форматируем символ для Bybit (BTC/USDT) и для MEXC (BTC_USDT)
   const bybitSymbol = symbol;
   const mexcSymbol = symbol.replace('/', '_');
   
   return new InlineKeyboard()
     .url("Bybit", `${CONFIG.BYBIT_LINK}${bybitSymbol}`).row()
-    .url("MEXC", `${CONFIG.MEXC_LINK}${mexcSymbol}`)
-    
+    .url("MEXC", `${CONFIG.MEXC_LINK}${mexcSymbol}`);
 };
 
 const createMessage = (symbol, trendResult, exitLevels) => {
@@ -282,7 +238,6 @@ const createMessage = (symbol, trendResult, exitLevels) => {
     `📈 <b>Тренд:</b> ${trendResult.trend} (${trendResult.percentage.toFixed(2)}%)\n` +
     `🎯 <b>Вход:</b> ${exitLevels.entry.toFixed(9)}\n` +
     `💰 <b>Профит: ${exitLevels.profitPercent}%</b>\n` +
-    //`🛑 <b>Стоп-лосс:</b> ${exitLevels.stopLoss.toFixed(6)}\n` +
     `🏷 <b>Трейлинг:</b> ${exitLevels.trailingStop.toFixed(6)}`;
 };
 
@@ -292,14 +247,22 @@ const analyzePair = async (symbol) => {
     const data = await fetchOHLCV(symbol, timeframe);
     if (!data || data.length < 50) continue;
     const closes = data.map(d => d.close);
+    
     analysis[timeframe] = {
       lastClose: closes.slice(-1)[0],
       indicators: {
-        RSI: calculateRSI(closes, CONFIG.INDICATORS.RSI.period).slice(-1)[0],
-        MACD: calculateMACD(closes, CONFIG.INDICATORS.MACD.fastPeriod, CONFIG.INDICATORS.MACD.slowPeriod, CONFIG.INDICATORS.MACD.signalPeriod),
-        EMA: calculateEMA(closes, CONFIG.INDICATORS.EMA.period).slice(-1)[0],
-        SMA: calculateSMA(closes, CONFIG.INDICATORS.SMA.period).slice(-1)[0],
-        BOLL: calculateBollingerBands(closes, CONFIG.INDICATORS.BOLL.period, CONFIG.INDICATORS.BOLL.stdDev),
+        STOCHASTIC: calculateStochastic(
+          data,
+          CONFIG.INDICATORS.STOCHASTIC.period,
+          CONFIG.INDICATORS.STOCHASTIC.kPeriod,
+          CONFIG.INDICATORS.STOCHASTIC.dPeriod
+        ),
+        MACD: calculateMACD(
+          closes,
+          CONFIG.INDICATORS.MACD.fastPeriod,
+          CONFIG.INDICATORS.MACD.slowPeriod,
+          CONFIG.INDICATORS.MACD.signalPeriod
+        ),
         ATR: calculateATR(data, CONFIG.INDICATORS.ATR.period)
       }
     };
@@ -311,16 +274,12 @@ const analyzePair = async (symbol) => {
 const checkStateChange = (symbol, newState) => {
   const previousState = pairStates.get(symbol);
   
-  // Если состояние не изменилось
   if (previousState === newState) return false;
   
-  // Запоминаем новое состояние
   pairStates.set(symbol, newState);
   
-  // Если предыдущего состояния не было (первый анализ)
   if (!previousState) return newState.includes("BULLISH");
   
-  // Определяем важные переходы
   const importantTransitions = [
     ["BEARISH", "BULLISH"],
     ["BEARISH", "STRONG_BULLISH"],
@@ -338,9 +297,6 @@ const checkStateChange = (symbol, newState) => {
 // Основная функция анализа
 const runAnalysis = async (bot) => {
   try {
-   // console.log("Starting analysis...");
-  //  console.log(`Analyzing ${CONFIG.TRADING_PAIRS.length} pairs:`, CONFIG.TRADING_PAIRS);
-    
     for (const pair of CONFIG.TRADING_PAIRS) {
       try {
         const analysis = await analyzePair(pair);
@@ -366,7 +322,6 @@ const runAnalysis = async (bot) => {
           trendResult.profitPercent
         );
         
-       // console.log(`Sending signal for ${pair}: ${trendResult.trend}`);
         await bot.api.sendMessage(
           CONFIG.CHAT_ID,
           createMessage(pair, trendResult, exitLevels),
@@ -374,19 +329,16 @@ const runAnalysis = async (bot) => {
         );
         await setTimeout(CONFIG.MESSAGE_DELAY);
       } catch (error) {
-       // console.error(`Error analyzing pair ${pair}:`, error);
+        console.error(`Error analyzing pair ${pair}:`, error);
       }
     }
-    
-   // console.log("Analysis completed");
   } catch (error) {
-   // console.error("Error in runAnalysis:", error);
+    console.error("Error in runAnalysis:", error);
   }
 };
 
 // Команды для управления парами
 const setupBotCommands = (bot) => {
-  // Добавление пары для анализа
   bot.command('add_pair', async (ctx) => {
     const pair = ctx.message.text.split(' ')[1];
     if (!pair) return ctx.reply("Укажите пару, например: /add_pair BTC/USDT");
@@ -399,7 +351,6 @@ const setupBotCommands = (bot) => {
     ctx.reply(`Пара ${pair} добавлена в список для анализа. Всего пар: ${CONFIG.TRADING_PAIRS.length}`);
   });
   
-  // Удаление пары из анализа
   bot.command('remove_pair', async (ctx) => {
     const pair = ctx.message.text.split(' ')[1];
     if (!pair) return ctx.reply("Укажите пару, например: /remove_pair BTC/USDT");
@@ -413,12 +364,10 @@ const setupBotCommands = (bot) => {
     ctx.reply(`Пара ${pair} удалена из списка для анализа. Всего пар: ${CONFIG.TRADING_PAIRS.length}`);
   });
   
-  // Просмотр всех пар для анализа
   bot.command('list_pairs', async (ctx) => {
     ctx.reply(`Текущие пары для анализа (${CONFIG.TRADING_PAIRS.length}):\n${CONFIG.TRADING_PAIRS.join('\n')}`);
   });
   
-  // Проверка состояния пары
   bot.command('check', async (ctx) => {
     const pair = ctx.message.text.split(' ')[1];
     if (!pair) return ctx.reply("Укажите пару, например: /check BTC/USDT");
@@ -427,22 +376,16 @@ const setupBotCommands = (bot) => {
     ctx.reply(`Текущее состояние пары ${pair}: ${state}`);
   });
   
-  // Ручной запуск анализа
   bot.command('analyze', async (ctx) => {
     await ctx.reply("Запускаю анализ...");
     await runAnalysis(bot);
-    await ctx.reply("Анализ  завершен");
+    await ctx.reply("Анализ завершен");
   });
 };
 
 // Экспорт бота с автозапуском
 module.exports = (bot) => {
-  // Настройка команд бота
   setupBotCommands(bot);
-  
-  // Запуск анализа сразу при старте
   runAnalysis(bot).catch(console.error);
-  
-  // Установка периодического запуска
   setInterval(() => runAnalysis(bot), CONFIG.ANALYSIS_INTERVAL);
 };
