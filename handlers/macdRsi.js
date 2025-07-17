@@ -283,7 +283,8 @@ const createMessage = (symbol, trendResult, exitLevels) => {
     `🎯 <b>Вход:</b> ${exitLevels.entry.toFixed(9)}\n` +
     `💰 <b>Профит: ${exitLevels.profitPercent}%</b>\n` +
     //`🛑 <b>Стоп-лосс:</b> ${exitLevels.stopLoss.toFixed(6)}\n` +
-    `🏷 <b>Трейлинг:</b> ${exitLevels.trailingStop.toFixed(6)}`;
+   // `🏷 <b>Трейлинг:</b> ${exitLevels.trailingStop.toFixed(6)}`
+    ;
 };
 
 const analyzePair = async (symbol) => {
