@@ -1,0 +1,14 @@
+{
+  "database": {
+    "host": "localhost",
+    "user": "root",
+    "password": "",
+    "database": "price_monitor"
+  },
+  "monitoring": {
+    "save_to_database": true,
+    "save_html_pages": false,
+    "cleanup_days": 30,
+    "optimize_tables": true
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "monitoring_interval_minutes": 60,
+  "request_timeout": 30,
+  "max_retries": 3,
+  "random_delay_between_requests": true,
+  "min_delay": 3,
+  "max_delay": 7,
+  "save_html_pages": true,
+  "browser_headless": true,
+  "notification_threshold_percent": 1.0,
+  "auto_cleanup_days": 30,
+  "browser_use_proxy": false,
+  "browser_disable_images": true,
+  "browser_window_width": 1920,
+  "browser_window_height": 1080
+}
