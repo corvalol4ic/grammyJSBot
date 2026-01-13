@@ -1,5 +1,5 @@
 {
-  "monitoring_interval_minutes": 60,
+  "monitoring_interval_minutes": 50,
   "request_timeout": 30,
   "max_retries": 3,
   "random_delay_between_requests": true,
